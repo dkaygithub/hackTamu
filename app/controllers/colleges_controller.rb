@@ -1,6 +1,21 @@
+require 'Scraper.rb'
 class CollegesController < ApplicationController
-  before_action :set_college, only: [:show, :edit, :update, :destroy]
+  before_action :set_college, only: [:check_scraper, :show, :edit, :update, :destroy]
+  before_action :check_scraper, only: [:show]
 
+  @scraper 
+  def check_scraper
+	if @scraper.nil?
+		@scraper = Scraper.instance
+	end
+	@scraper.getVenues.each do |v|
+		if !@college.venues.any? {|w| w.name == v}
+			n = @college.venues.create(name: v)
+			n.save
+		end
+	end
+  end
+  
   # GET /colleges
   # GET /colleges.json
   def index
