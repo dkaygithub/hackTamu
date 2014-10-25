@@ -1,7 +1,9 @@
 Rails.application.routes.draw do
-  resources :venues
 
-  resources :colleges
+  resources :colleges do
+
+  	resources :venues
+  end
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
