@@ -1,0 +1,12 @@
+C:\Users\Tyler\Xamarin\TAMUHack\TAMUHack\TAMUHack\obj\Debug\CollegeListPage.xaml.g.cs
+C:\Users\Tyler\Xamarin\TAMUHack\TAMUHack\TAMUHack\obj\Debug\VenuesListPage.xaml.g.cs
+C:\Users\Tyler\Xamarin\TAMUHack\TAMUHack\TAMUHack\obj\Debug\VenuePage.xaml.g.cs
+C:\Users\Tyler\Xamarin\TAMUHack\TAMUHack\TAMUHack\bin\Debug\TAMUHack.dll
+C:\Users\Tyler\Xamarin\TAMUHack\TAMUHack\TAMUHack\bin\Debug\TAMUHack.pdb
+C:\Users\Tyler\Xamarin\TAMUHack\TAMUHack\TAMUHack\bin\Debug\Xamarin.Forms.Core.dll
+C:\Users\Tyler\Xamarin\TAMUHack\TAMUHack\TAMUHack\bin\Debug\Xamarin.Forms.Xaml.dll
+C:\Users\Tyler\Xamarin\TAMUHack\TAMUHack\TAMUHack\bin\Debug\Xamarin.Forms.Core.xml
+C:\Users\Tyler\Xamarin\TAMUHack\TAMUHack\TAMUHack\bin\Debug\Xamarin.Forms.Xaml.xml
+C:\Users\Tyler\Xamarin\TAMUHack\TAMUHack\TAMUHack\obj\Debug\TAMUHack.dll
+C:\Users\Tyler\Xamarin\TAMUHack\TAMUHack\TAMUHack\obj\Debug\TAMUHack.pdb
+C:\Users\Tyler\Xamarin\TAMUHack\TAMUHack\TAMUHack\obj\Debug\TAMUHack.csprojResolveAssemblyReference.cache

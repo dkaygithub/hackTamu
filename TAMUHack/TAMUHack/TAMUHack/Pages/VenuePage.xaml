@@ -1,0 +1,41 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<TabbedPage xmlns="http://xamarin.com/schemas/2014/forms"
+					   xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+					   x:Class="TAMUHack.Pages.VenuePage"
+                       Title="{Binding Name}"
+                       x:Name="VenueTabbedPage"
+                       BackgroundColor="#F0F0F0">
+    <TabbedPage.Resources>
+        <ResourceDictionary>
+            <Font x:Key="NameFont">26</Font>
+            <Font x:Key="RatingFont">Medium</Font>
+            <Color x:Key="Background">#F0F0F0</Color>
+            <Color x:Key="MainText">Black</Color>
+            <Color x:Key="SubText">#505050</Color>
+        </ResourceDictionary>
+    </TabbedPage.Resources>
+    <TabbedPage.ItemTemplate>
+        <DataTemplate>
+            <ContentPage Title="{Binding Name}">
+                <ListView x:Name="DishesListView"
+                          BackgroundColor="{StaticResource Background}">
+                    <DataTemplate>
+                        <ViewCell>
+                            <StackLayout Orientation="Horizontal"
+                                         Padding="10,10,10,10">
+                                <Label Text="SOMEMEAL"
+                                       HorizontalOptions="StartAndExpand"
+                                       TextColor="{StaticResource MainText}"/>
+                                <Label Text="Rating"
+                                       HorizontalOptions="EndAndExpand"
+                                       TextColor="{StaticResource SubText}"/>
+                            </StackLayout>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView>
+            </ContentPage>
+        </DataTemplate>
+    </TabbedPage.ItemTemplate>
+    
+    
+</TabbedPage>

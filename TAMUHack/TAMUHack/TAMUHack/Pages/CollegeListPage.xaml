@@ -1,0 +1,47 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+					   xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+                       xmlns:local="clr-namespace:TAMUHack;assembly=TAMUHack"
+					   x:Class="TAMUHack.Pages.CollegeListPage"
+                       Title="Colleges"
+                       BackgroundColor="#F0F0F0">
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <Font x:Key="NameFont">Large</Font>
+            <Font x:Key="LocationFont">Medium</Font>
+            <Color x:Key="Background">#F0F0F0</Color>
+            <Color x:Key="MainText">Black</Color>
+            <Color x:Key="SubText">#505050</Color>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+    <StackLayout>
+        <SearchBar TextChanged="OnTextChanged"/>
+        <ListView x:Name="CollegesListView"
+                  ItemTapped="OnItemSelected"
+                  BackgroundColor="{StaticResource Background}">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <ViewCell>
+                        <StackLayout Orientation="Vertical"
+                                     Padding="10,5,5,5"
+                                     Spacing="3"> 
+                            <Label Text="{Binding Name}" 
+                                   VerticalOptions="EndAndExpand" 
+                                   Font="{StaticResource NameFont}"
+                                   TextColor="Black"/>
+                            <StackLayout Orientation="Horizontal"
+                                    VerticalOptions="StartAndExpand">
+                                <BoxView WidthRequest="7"
+                                         HorizontalOptions="Start"/>
+                                <Label Text="{Binding Location}" 
+                                       HorizontalOptions="StartAndExpand"
+                                       Font="{StaticResource LocationFont}"
+                                       TextColor="#505050"/>
+                            </StackLayout>
+                        </StackLayout>
+                    </ViewCell>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+    </StackLayout>
+</ContentPage>
