@@ -1,15 +1,21 @@
 class VenuesController < ApplicationController
   before_action :set_venue, only: [:show, :edit, :update, :destroy]
+  before_action :get_college
+
+  def get_college
+	  @college = College.find(params[:college_id])
+  end
 
   # GET /venues
   # GET /venues.json
   def index
-    @venues = Venue.all
+    @venues = @college.venues
   end
 
   # GET /venues/1
   # GET /venues/1.json
   def show
+	  @venue = @college.venues.find(params[:id])
   end
 
   # GET /venues/new
@@ -24,7 +30,7 @@ class VenuesController < ApplicationController
   # POST /venues
   # POST /venues.json
   def create
-    @venue = Venue.new(venue_params)
+    @venue = @college.venues.new(venue_params)
 
     respond_to do |format|
       if @venue.save
