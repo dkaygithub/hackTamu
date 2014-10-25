@@ -1,8 +1,20 @@
 Rails.application.routes.draw do
 
+  resources :meals
+
+  get 'meals/show'
+
+  get 'meals/index'
+
+  get 'meals/create'
+
+  get 'meals/new'
+
   resources :colleges do
 
-  	resources :venues
+  	resources :venues do 
+  		resources :meals
+	end
   end
 
   # The priority is based upon order of creation: first created -> highest priority.

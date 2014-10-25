@@ -15,7 +15,6 @@ class VenuesController < ApplicationController
   # GET /venues/1
   # GET /venues/1.json
   def show
-	  @venue = @college.venues.find(params[:id])
   end
 
   # GET /venues/new
@@ -70,7 +69,21 @@ class VenuesController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_venue
-      @venue = Venue.find(params[:id])
+      if @college.nil?
+	     get_college 
+      end
+      @venue = @college.venues.find(params[:id])
+      m = @venue.meals
+      if m.length != 3
+	  m.clear
+      	  t = m.create(name: "Breakfast")	  
+	  t.save
+      	  t = m.create(name: "Lunch")	  
+	  t.save
+      	  t = m.create(name: "Dinner")	  
+	  t.save
+      end
+
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.
