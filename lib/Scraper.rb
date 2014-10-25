@@ -11,8 +11,8 @@ class Dish
   @venue
   @name
 
-  def initialize(meal, venue, name)
-    @meal = meal
+  def initialize(venue, name)
+    @meal = Array.new
     @venue = venue
     @name = name
   end
@@ -27,6 +27,10 @@ class Dish
 
   def getName
     return @name
+  end
+
+  def addMeal(m)
+    @meal.push(m)
   end
 end
 
@@ -88,8 +92,20 @@ class Scraper
         dishesArray = dishesArray.css(".menu-name").collect{|v| v.text.strip}
 
         dishesArray.each do |dish|
-          currentDish = Dish.new(mealperiod.text, key, dish)
-          @dishes.push(currentDish)
+          index = -1
+          @dishes.each_with_index do |v, i|
+            if(v.getName == dish)
+              index = i
+            end
+          end
+
+          if index >= 0
+            @dishes[index].addMeal(mealperiod.text)
+          else
+            currentDish = Dish.new(key, dish)
+            currentDish.addMeal(mealperiod.text)
+            @dishes.push(currentDish)
+          end
         end
       end
     end
@@ -108,7 +124,6 @@ class Scraper
     venueURLs = page.css(venueUrlSelector).collect{|v| v["href"]}
 
     @venues = Hash.new
-    #venueNames.each{|v| puts v}
     venueNames.each_index do |i|
       @venues[venueNames[i]] = venueURLs[i]
     end
