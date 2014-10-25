@@ -6,6 +6,30 @@ SECONDS_IN_DAY = 86400
 BASE_URL = "http://baylor.campusdish.com"
 WEEKEND_HACK = "&MenuDate=2014-10-24&UIBuildDateFrom=2014-10-24"
 
+class Dish
+  @meal
+  @venue
+  @name
+
+  def initialize(meal, venue, name)
+    @meal = meal
+    @venue = venue
+    @name = name
+  end
+
+  def getVenue
+    return @venue
+  end
+
+  def getMeal
+    return @meal
+  end
+
+  def getName
+    return @name
+  end
+end
+
 class Scraper
 
   include Singleton
@@ -13,10 +37,6 @@ class Scraper
   @dishes
   @venueScrapeTime
   @dishScrapeTime
-
-  def confirmWorks
-    return "Hello World"
-  end
 
   def getVenues
     #if it has been > 1 day since last update, scrape for venues
@@ -27,12 +47,20 @@ class Scraper
     return @venues.keys
   end
 
-  def getDishes
+  def getDishes(ven)
     #if it has been > 1 hour since last update, scrape for dishes
     if(@dishScrapeTime.nil? || timeSinceDishScrape > SECONDS_IN_DAY)
       scrapeDishes
     end
-    return @venues
+
+    mealNameHash = Hash.new
+    @dishes.each do |v|
+      if v.getVenue == ven
+        mealNameHash[v.getName] = v.getMeal
+      end
+    end
+
+    return mealNameHash
   end
 
   def timeSinceVenueScrape
@@ -49,31 +77,26 @@ class Scraper
 
   def scrapeDishes
     return false if @venues.nil?
-    puts "scraping dishes"
     @dishScrapeTime = Time.now
+    @dishes = Array.new
 
     @venues.each do |key, value|
-      print "Venue: ", key, "\n"
       page = Nokogiri::HTML(open(BASE_URL + value + WEEKEND_HACK))
       page.css(".menu-period").each do |mealperiod|
         mealURL = mealperiod["href"]
-        mealIs = mealperiod.text
-        dishes = Nokogiri::HTML(open(BASE_URL + mealURL))
-        dishes = dishes.css(".menu-name").collect{|v| v.text.strip}
-        if mealIs == "Breakfast"
-          puts "Breakfast:\n", dishes
-        elsif mealIs == "Lunch"
-          puts "Lunch:\n", dishes
-        elsif mealIs == "Dinner"
-          puts "Dinner:\n", dishes
+        dishesArray = Nokogiri::HTML(open(BASE_URL + mealURL))
+        dishesArray = dishesArray.css(".menu-name").collect{|v| v.text.strip}
+
+        dishesArray.each do |dish|
+          currentDish = Dish.new(mealperiod.text, key, dish)
+          @dishes.push(currentDish)
         end
-        print "\n\n"
       end
     end
+    return @dishes
   end
 
   def scrapeVenues
-    puts "scraping venues"
     @venueScrapeTime = Time.now
     page = Nokogiri::HTML(open(BASE_URL + "/EatWellContent/ViewMenu.aspx"))
     venueNameSelector = ".maincontent-full > div:nth-child(1) > .media >
