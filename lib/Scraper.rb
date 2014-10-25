@@ -53,7 +53,7 @@ class Scraper
 
   def getDishes(ven)
     #if it has been > 1 hour since last update, scrape for dishes
-    if(@dishScrapeTime.nil? || timeSinceDishScrape > SECONDS_IN_DAY)
+    if(@dishes.nil?|| @dishScrapeTime.nil? || timeSinceDishScrape > SECONDS_IN_DAY)
       scrapeDishes
     end
 
@@ -135,4 +135,6 @@ class Scraper
       end
     end
   end
+
+
 end
