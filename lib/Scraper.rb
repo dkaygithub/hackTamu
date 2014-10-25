@@ -1,15 +1,16 @@
 require 'nokogiri'
 require 'open-uri'
+require 'singleton'
 
 SECONDS_IN_DAY = 86400
-SECONDS_IN_HOUR = 3600
 BASE_URL = "http://baylor.campusdish.com"
 WEEKEND_HACK = "&MenuDate=2014-10-24&UIBuildDateFrom=2014-10-24"
 
 class Scraper
 
-  #include Singleton
+  include Singleton
   @venues
+  @dishes
   @venueScrapeTime
   @dishScrapeTime
 
@@ -19,16 +20,16 @@ class Scraper
 
   def getVenues
     #if it has been > 1 day since last update, scrape for venues
-    if(@venueScrapeTime.nil? || @timeSinceVenueScrape > SECONDS_IN_DAY)
+    if(@venueScrapeTime.nil? || timeSinceVenueScrape > SECONDS_IN_DAY)
       scrapeVenues
     end
 
     return @venues.keys
   end
 
-  def getDishes(venue)
+  def getDishes
     #if it has been > 1 hour since last update, scrape for dishes
-    if(@dishScrapeTime.nil? || @timeSinceDishScrape > SECONDS_IN_HOUR)
+    if(@dishScrapeTime.nil? || timeSinceDishScrape > SECONDS_IN_DAY)
       scrapeDishes
     end
     return @venues
@@ -42,24 +43,29 @@ class Scraper
 
   def timeSinceDishScrape
     #Time since last Venues scrape, in seconds
-    timeSinceDishScrape = (Time.now - @dishScrapeTime)/SECONDS_IN_HOUR
+    timeSinceDishScrape = (Time.now - @dishScrapeTime)/SECONDS_IN_DAY
     return timeSinceDishScrape
   end
 
   def scrapeDishes
     return false if @venues.nil?
+    puts "scraping dishes"
+    @dishScrapeTime = Time.now
 
     @venues.each do |key, value|
       print "Venue: ", key, "\n"
       page = Nokogiri::HTML(open(BASE_URL + value + WEEKEND_HACK))
-      page.css(".menu-period").children.each do |mealperiod|
-        dishes = page.css(".menu-name").collect{|v| v.text.strip}
-        if mealperiod.text == "Breakfast"
+      page.css(".menu-period").each do |mealperiod|
+        mealURL = mealperiod["href"]
+        mealIs = mealperiod.text
+        dishes = Nokogiri::HTML(open(BASE_URL + mealURL))
+        dishes = dishes.css(".menu-name").collect{|v| v.text.strip}
+        if mealIs == "Breakfast"
           puts "Breakfast:\n", dishes
-        elsif mealperiod.text == "Lunch"
-          print "Lunch:\n", dishes
-        elsif mealperiod.text == "Dinner"
-          print "Dinner:\n", dishes
+        elsif mealIs == "Lunch"
+          puts "Lunch:\n", dishes
+        elsif mealIs == "Dinner"
+          puts "Dinner:\n", dishes
         end
         print "\n\n"
       end
@@ -67,6 +73,8 @@ class Scraper
   end
 
   def scrapeVenues
+    puts "scraping venues"
+    @venueScrapeTime = Time.now
     page = Nokogiri::HTML(open(BASE_URL + "/EatWellContent/ViewMenu.aspx"))
     venueNameSelector = ".maincontent-full > div:nth-child(1) > .media >
       .mediaBody > h2"
