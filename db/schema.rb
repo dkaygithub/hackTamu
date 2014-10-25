@@ -20,9 +20,4 @@ ActiveRecord::Schema.define(version: 20141025041315) do
     t.string   "location"
   end
 
-  create_table "scrapers", force: true do |t|
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
 end
